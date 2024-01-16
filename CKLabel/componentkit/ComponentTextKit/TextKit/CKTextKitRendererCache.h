@@ -62,11 +62,11 @@ namespace CK {
        related to the actual drawing of the text, which may include additional parameters.
        */
       struct Key {
-
+        UIUserInterfaceStyle userInterfaceStyle;
         CKTextKitAttributes attributes;
         CGSize constrainedSize;
 
-        Key(CKTextKitAttributes a, CGSize cs);
+        Key(UIUserInterfaceStyle userInterfaceStyle, CKTextKitAttributes a, CGSize cs);
 
         size_t hash;
 
@@ -75,7 +75,8 @@ namespace CK {
           // These comparisons are in a specific order to reduce the overall cost of this function.
           return hash == other.hash
           && CGSizeEqualToSize(constrainedSize, other.constrainedSize)
-          && attributes == other.attributes;
+          && attributes == other.attributes
+          && userInterfaceStyle == other.userInterfaceStyle;
         }
       };
 

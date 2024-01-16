@@ -88,15 +88,27 @@ static CK::TextKit::Renderer::Cache *rasterContentsCache()
 
 - (id)willDisplayAsynchronouslyWithDrawParameters:(id<NSObject>)drawParameters
 {
-  return rasterContentsCache()->objectForKey({_renderer.attributes, self.bounds.size});
+  UIUserInterfaceStyle u = UIUserInterfaceStyleLight;
+  UIView *v = (UIView *)self.delegate;
+  if ([v isKindOfClass:UIView.class]) {
+    u = v.traitCollection.userInterfaceStyle;
+  }
+
+  return rasterContentsCache()->objectForKey({u, _renderer.attributes, self.bounds.size});
 }
 
 - (void)didDisplayAsynchronously:(id)newContents withDrawParameters:(id<NSObject>)drawParameters
 {
   if (newContents) {
+    UIUserInterfaceStyle u = UIUserInterfaceStyleLight;
+    UIView *v = (UIView *)self.delegate;
+    if ([v isKindOfClass:UIView.class]) {
+      u = v.traitCollection.userInterfaceStyle;
+    }
+
     CGImageRef imageRef = (__bridge CGImageRef)newContents;
     NSUInteger bytes = CGImageGetBytesPerRow(imageRef) * CGImageGetHeight(imageRef);
-    rasterContentsCache()->cacheObject({_renderer.attributes, self.bounds.size}, newContents, bytes);
+    rasterContentsCache()->cacheObject({u, _renderer.attributes, self.bounds.size}, newContents, bytes);
   }
 }
 
