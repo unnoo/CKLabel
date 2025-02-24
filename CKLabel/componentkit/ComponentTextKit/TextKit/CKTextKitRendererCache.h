@@ -114,7 +114,7 @@ namespace CK {
        */
       struct Cache {
       private:
-        CK::ConcurrentCacheImpl<const Key, id, KeyHasher> cache;
+        CK::ConcurrentCacheImpl<Key, id, KeyHasher> cache;
         ApplicationObserver *applicationObserver;
 
       public:
